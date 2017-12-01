@@ -11,10 +11,7 @@ Primarily a client-side SPA (single-page app) built with ReactJS
   * No persistent database is involved; the focus is on the client-side experience
 
 ## Final Product
-!["Screenshot of the compose-tweet page"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/compose-tweet-view.png?raw=true)
-!["Screenshot of a tweet list"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/tweet-list-view.png?raw=true)
-!["Screenshot of the create URL page"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/tweet-list-view.png?raw=true)
-
+!["Screenshot of the chat page"](https://github.com/VivekPatel3835/Chatty-App/blob/master/screenshots/chat-page.png?raw=true)
 
 ## Getting Started
 
