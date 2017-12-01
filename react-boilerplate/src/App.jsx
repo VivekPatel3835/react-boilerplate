@@ -19,6 +19,24 @@ class App extends Component {
     this.socket = new WebSocket("ws://localhost:3001");
   }
 
+  componentDidMount = () => {
+    this.socket.onopen = (event) => {
+      //object below will be routed through the websocket and will return with no of clients connected
+      console.log('Connected to server on PORT 3001')
+    };
+
+    this.socket.onmessage = (event) => {
+      const incomingMessage = JSON.parse(event.data);
+      if(incomingMessage.type === 'clientCount') {
+        this.clientsConnected(incomingMessage);
+        console.log('# of clients connected --> onmessage react' , incomingMessage)
+      } else {
+        this.broadcastMessage(incomingMessage.username, incomingMessage.content,
+          incomingMessage.type, incomingMessage.id);
+      }
+    }
+  }
+
   clientsConnected = (clientsConnected) => {
     console.log('in clientsConnected function'. clientsConnected)
     const updatedClientsCount = clientsConnected;
@@ -44,7 +62,7 @@ class App extends Component {
         message = oldUsername + ' has changed their username to ' + newUsername;
       }
       this.broadcastMessage(oldUsername, message, messageType)
-      event.target.value = '';
+      event.target.value = ''; //clears message input field
     }
   }
 
@@ -61,48 +79,30 @@ class App extends Component {
     alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
   }
-  saveMessage = (uuid, username, message, type) => {
-    //saves all incoming messages then renders to browser
-    const newMessage = {
-      id: uuid,
-      type: type,
-      username: username,
-      content: message
-    }
-    const messages = this.state.messages.concat(newMessage);
-    const newUsername = {name: this.state.tempUser.name};
-    this.setState({messages: messages, currentUser: newUsername});
-    console.log('in save message. username --> ', username);
-  }
 
-  broadcastMessage = (username, message, type) => {
-    //sends user message to the server for broadcasting to all clients
-    const newMessage = {
-      username: username,
-      content: message,
-      type: type
-    }
-    console.log('in broadcast message --> ', username, message, type)
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages});
-    this.socket.send(JSON.stringify(newMessage));
-  }
-
-  componentDidMount = () => {
-    this.socket.onopen = (event) => {
-      //object below will be routed through the websocket and will return with no of clients connected
-      console.log('Connected to server on PORT 3001')
-    };
-
-    this.socket.onmessage = (event) => {
-      const incomingMessage = JSON.parse(event.data);
-      if(incomingMessage.type === 'clientCount') {
-        this.clientsConnected(incomingMessage);
-        console.log('# of clients connected --> onmessage react' , incomingMessage)
-      } else {
-        this.saveMessage(incomingMessage.id, incomingMessage.username,
-          incomingMessage.content, incomingMessage.type);
+  broadcastMessage = (username, message, type, uuid) => {
+    if(type === 'postNotification' || type === 'postMessage') {
+      //sends user message to the server for broadcasting to all clients
+      const newMessage = {
+        username: username,
+        content: message,
+        type: type
       }
+      console.log('in broadcast message --> ', username, message, type)
+      const messages = this.state.messages.concat(newMessage)
+      this.socket.send(JSON.stringify(newMessage));
+    } else if(type === 'incomingNotification' || type === 'incomingMessage') {
+      //saves all incoming messages then renders to browser
+      const newMessage = {
+        id: uuid,
+        type: type,
+        username: username,
+        content: message
+      }
+      const messages = this.state.messages.concat(newMessage);
+      const newUsername = {name: this.state.tempUser.name};
+      this.setState({messages: messages, currentUser: newUsername});
+      console.log('in save message. username --> ', username);
     }
   }
 

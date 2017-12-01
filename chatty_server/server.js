@@ -31,7 +31,7 @@ wss.broadcast = function broadcast(data, ws) {
       }
    }
   wss.clients.forEach(function each(client) {
-    if (client !== ws && client.readyState === WebSocket.OPEN) {
+    if (client.readyState === WebSocket.OPEN) {
       console.log('websocket outgoing --> ', data)
       client.send(JSON.stringify(data));
     }
