@@ -21,15 +21,12 @@ class App extends Component {
 
   componentDidMount = () => {
     this.socket.onopen = (event) => {
-      //object below will be routed through the websocket and will return with no of clients connected
-      console.log('Connected to server on PORT 3001')
     };
 
     this.socket.onmessage = (event) => {
       const incomingMessage = JSON.parse(event.data);
       if(incomingMessage.type === 'clientCount') {
         this.clientsConnected(incomingMessage);
-        console.log('# of clients connected --> onmessage react' , incomingMessage)
       } else {
         this.broadcastMessage(incomingMessage.username, incomingMessage.content,
           incomingMessage.type, incomingMessage.id);
@@ -38,7 +35,6 @@ class App extends Component {
   }
 
   clientsConnected = (clientsConnected) => {
-    console.log('in clientsConnected function'. clientsConnected)
     const updatedClientsCount = clientsConnected;
     this.setState({clientsConnected: updatedClientsCount})
   }
@@ -88,7 +84,6 @@ class App extends Component {
         content: message,
         type: type
       }
-      console.log('in broadcast message --> ', username, message, type)
       const messages = this.state.messages.concat(newMessage)
       this.socket.send(JSON.stringify(newMessage));
     } else if(type === 'incomingNotification' || type === 'incomingMessage') {
@@ -102,16 +97,14 @@ class App extends Component {
       const messages = this.state.messages.concat(newMessage);
       const newUsername = {name: this.state.tempUser.name};
       this.setState({messages: messages, currentUser: newUsername});
-      console.log('in save message. username --> ', username);
     }
   }
 
   render() {
-    console.log("Rendering <App/>");
     return ([
       <nav className="navbar">
-      <a href="/" className="navbar-brand">Chatty</a>
-      <ClientCount clientsConnected = {this.state.clientsConnected.clients}/>
+        <a href="/" className="navbar-brand">Chatty</a>
+        <ClientCount clientsConnected = {this.state.clientsConnected.clients}/>
       </nav>,
       <MessageList messages = {this.state.messages}/>,
       <ChatBar ifEnter = {this.ifEnter} user={this.state.tempUser} handleChange={this.handleChange}/>

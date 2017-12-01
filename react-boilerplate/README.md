@@ -1,45 +1,46 @@
-React Boilerplate
-=====================
+# Chatty App
 
-A minimal and light dev environment for ReactJS.
+Many of the web applications that you use today have real-time functionality where the user does not have to reload the page in order to see updates. Major examples of these include Slack, Twitter and Facebook.
 
-### Usage
+Chatty allows users to communicate with each other without having to register accounts. It uses React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel.
 
-Clone the boilerplate and create your own git repo.
+Primarily a client-side SPA (single-page app) built with ReactJS
+  * Contains a chat log displaying messages and notifications
+  * Contains an input field to change your name and an input field to send a message
+  * The client-side app communicates with a server via WebSockets for multi-user real-time updates
+  * No persistent database is involved; the focus is on the client-side experience
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+## Final Product
+!["Screenshot of the compose-tweet page"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/compose-tweet-view.png?raw=true)
+!["Screenshot of a tweet list"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/tweet-list-view.png?raw=true)
+!["Screenshot of the create URL page"](https://github.com/VivekPatel3835/tweeter/blob/master/screenshots/tweet-list-view.png?raw=true)
 
-Install the dependencies and start the server.
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+## Getting Started
 
-### Static Files
+1. Fork this repository, then clone your fork of this repository.
+2. Install dependencies in each folder (react_boilerplate and chatty_server) using the `npm install --save` command.
+3. Open two terminal windows and start the web servers in each folder using `npm start` command. The app will be served at <http://localhost:3000/>.
+4. Go to <http://localhost:3000/> in your browser.
 
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
 
 ### Dependencies
 
 * React
 * Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* babel-loader
+* webpack-dev-server
+
+## Authors
+
+* **Vivek Patel** - *Initial work* - [Chatty App](https://github.com/VivekPatel3835/Chatty-App)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone who's code was used
+* Inspiration
+* etc

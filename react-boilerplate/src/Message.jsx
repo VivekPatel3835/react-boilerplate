@@ -2,14 +2,13 @@ import React, {Component} from 'react';
 
 class Message extends Component {
   render() {
-    console.log("Rendering <Message/>");
     return (
-     <div className="message">
+    <div className="message">
       <span className="message-username">{this.props.eachMessage.username}</span>
       <span className="message-content">{this.props.eachMessage.content}</span>
-     </div>
-     );
-   }
- }
+    </div>
+    );
+  }
+}
 
- export default Message;
+export default Message;
