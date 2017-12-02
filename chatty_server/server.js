@@ -31,6 +31,7 @@ wss.broadcast = function broadcast(data) {
     }
   }
   wss.clients.forEach(function each(client) {
+    console.log('in websocket client loop --> ', client)
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(data));
     }
@@ -41,6 +42,7 @@ wss.broadcast = function broadcast(data) {
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
+  console.log('websocket incoming: ws ultron_id --> ', ws._ultron_id)
   const clientCount = {clients: wss.clients.size, type: 'clientCount'};
   wss.broadcast(clientCount);
   ws.on('message', incoming = (message) => {
@@ -53,6 +55,7 @@ wss.on('connection', (ws) => {
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () =>  {
+    const clientCount = {clients: wss.clients.size, type: 'clientCount'};
     wss.broadcast(clientCount);
     console.log('Client disconnected');
   });
