@@ -66,6 +66,16 @@ class App extends Component {
     };
 
 
+    getElements = (className) => {
+        const a = document.getElementsByClassName(className);
+        return a
+    };
+
+    scrollElementIntoView(element, config = {}) {
+        element.scrollIntoView({...config})
+    }
+
+
     handleChange = (event) => {
         //triggered when user types in the username field
         const tempUser = {name: event.target.value};
@@ -94,6 +104,9 @@ class App extends Component {
             const messages = this.state.messages.concat(newMessage);
             const newUsername = {name: this.state.tempUser.name};
             this.setState({messages: messages, currentUser: newUsername, tempUser: {name: ""}});
+            const elements = this.getElements("message");
+            const lastMessage = elements[elements.length - 1];
+            this.scrollElementIntoView(lastMessage)
         }
     };
 
