@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
-import Message from './Message.jsx';
 import MessageList from './MessageList.jsx';
 import ClientCount from './ClientCount.jsx';
 
@@ -10,7 +9,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            currentUser: {name: ''},
+            currentUser: {name: 'Anonymous'},
             tempUser: {name: ''},
             messages: [], //messages coming from the server will be stored here as they arrive
             clientsConnected: {clients: 1}
@@ -38,34 +37,39 @@ class App extends Component {
         this.setState({clientsConnected: updatedClientsCount})
     };
 
-    ifEnter = (event) => {
+    ifMessageSubmitted = (event) => {
         //triggered anytime enter key is pressed in the chat bar
         if (event.key === 'Enter') {
-            let oldUsername = this.state.currentUser.name || 'Anonymous';
-            let newUsername = this.state.tempUser.name || 'Anonymous';
-            let message = event.target.value || 'no message';
-            let messageType = '';
-            switch (event.target.name) {
-                case 'Message':
-                    messageType = 'postMessage';
-                    break;
-                case 'Username':
-                    messageType = 'postNotification';
-                    break;
+            const username = this.state.currentUser.name;
+            const message = event.target.value;
+            const messageType = 'postMessage';
+
+            if (message) {
+                this.broadcastMessage(username, message, messageType);
+                event.target.value = ''; //clears message input field
             }
-            if (messageType === 'postNotification') {
-                message = oldUsername + ' has changed their username to ' + newUsername;
-            }
-            this.broadcastMessage(oldUsername, message, messageType);
-            event.target.value = ''; //clears message input field
         }
     };
 
+    ifUserNameSubmitted = () => {
+        if (event.key === 'Enter') {
+            const oldUsername = this.state.currentUser.name;
+            const newUsername = this.state.tempUser.name;
+            const messageType = 'postNotification';
+            const message = oldUsername + ' has changed their username to ' + newUsername;
+
+            if (oldUsername !== newUsername) {
+                this.broadcastMessage(newUsername, message, messageType);
+                event.target.value = ''; //clears message input field
+            }
+        }
+    };
+
+
     handleChange = (event) => {
         //triggered when user types in the username field
-        let currentUser = {name: this.state.currentUser.name};
-        let tempUser = {name: event.target.value};
-        this.setState({tempUser: tempUser, currentUser: currentUser})
+        const tempUser = {name: event.target.value};
+        this.setState({tempUser: tempUser, currentUser: this.state.currentUser})
 
     };
 
@@ -89,7 +93,7 @@ class App extends Component {
             };
             const messages = this.state.messages.concat(newMessage);
             const newUsername = {name: this.state.tempUser.name};
-            this.setState({messages: messages, currentUser: newUsername});
+            this.setState({messages: messages, currentUser: newUsername, tempUser: {name: ""}});
         }
     };
 
@@ -100,7 +104,8 @@ class App extends Component {
                 <ClientCount clientsConnected={this.state.clientsConnected.clients}/>
             </nav>,
             <MessageList messages={this.state.messages}/>,
-            <ChatBar ifEnter={this.ifEnter} user={this.state.tempUser} handleChange={this.handleChange}/>
+            <ChatBar ifMessageSubmitted={this.ifMessageSubmitted} ifUserNameSubmitted={this.ifUserNameSubmitted}
+                     user={this.state.tempUser} handleChange={this.handleChange}/>
         ]);
     }
 }
