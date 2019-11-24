@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "install": "cd ./chatty_server && npm install --save && cd ../react-boilerplate/ && npm install --save"
+  }
+}

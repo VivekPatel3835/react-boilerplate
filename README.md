@@ -16,8 +16,16 @@ Primarily a client-side SPA (single-page app) built with ReactJS
 ## Getting Started
 
 1. Fork this repository, then clone your fork of this repository.
-2. Install dependencies in each folder (react_boilerplate and chatty_server) using the `npm install --save` command.
-3. Open two terminal windows and start the web servers in each folder using `npm start` command. The app will be served at <http://localhost:3000/>.
+2. Install dependencies in each folder (react_boilerplate and chatty_server) by running the following command in the project's root directory.
+    - `npm install`
+3. Open two terminal windows 
+    - terminal 1: 
+        - navigate to the `chatty_server` folder
+        - run `npm start`
+    - terminal 2: 
+        - navigate to the `react-boilerplate` folder 
+        - run `npm start`
+    This start the web servers in each folder. The app will be served at <http://localhost:3000/>.
 4. Go to <http://localhost:3000/> in your browser.
 
 
